@@ -27,6 +27,26 @@ namespace BusResrvation.Controllers
             return await _context.ReservationTables.ToListAsync();
         }
 
+        [HttpGet("GetByUserId/{userId}")]
+        public async Task<ActionResult<IEnumerable<ReservationTable>>> GetUserReservationDetails(int userId)
+        {
+            var reservationTable = await _context.ReservationTables.ToListAsync();
+            List<ReservationTable> userReservations = new List<ReservationTable>();
+           
+            foreach(ReservationTable res in reservationTable)
+            {
+                if (res.UserId == userId)
+                {
+                    userReservations.Add(res);
+                }
+            }
+            if (userReservations == null)
+            {
+                return NotFound();
+            }
+            return userReservations;
+
+        }
         // GET: api/ReservationTables/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ReservationTable>> GetReservationTable(int id)
