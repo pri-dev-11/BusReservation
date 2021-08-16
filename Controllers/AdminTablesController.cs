@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,6 +40,30 @@ namespace BusResrvation.Controllers
 
             return adminTable;
         }
+        
+        //POST:Getting user detail by email.
+        [HttpGet("GetByEmail/{email}")]
+        public async Task<ActionResult<AdminTable>> GetUserByEmail(string email)
+        {
+            var adminTable = await _context.AdminTables.ToListAsync();
+            AdminTable validAdmin = null;
+            foreach(AdminTable admin in adminTable)
+            {
+                if (admin.AdminEmail == email)
+                {
+                    validAdmin = admin;
+                }
+            }
+
+            if (validAdmin == null)
+            {
+                return NotFound();
+            }
+
+            return validAdmin;
+        }
+        
+        
 
         // PUT: api/AdminTables/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
