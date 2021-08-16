@@ -26,6 +26,25 @@ namespace BusResrvation.Controllers
         {
             return await _context.BusTables.ToListAsync();
         }
+        
+         [HttpGet("{source}/{destination}/{doj}")]
+        public async Task<ActionResult<IEnumerable<BusTable>>> GetSearchResult(string source, string destination, DateTime doj)
+        {
+            var busTable = await _context.BusTables.ToListAsync();
+            List<BusTable> searchReasult = new List<BusTable>();
+            foreach (BusTable bus in busTable)
+            {
+                if (bus.BusSource == source && bus.BusDestination == destination && bus.BusDateOfJourney == doj)
+                {
+                    searchReasult.Add(bus);
+                }
+            }
+            if (searchReasult == null)
+            {
+                return NotFound();
+            }
+            return searchReasult;
+        }
 
         // GET: api/BusTables/5
         [HttpGet("{id}")]
