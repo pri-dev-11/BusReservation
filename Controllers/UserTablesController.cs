@@ -40,6 +40,29 @@ namespace BusResrvation.Controllers
 
             return userTable;
         }
+        //get: user details by email
+        [HttpGet("GetByEmail/{email}")]
+        public async Task<ActionResult<UserTable>> GetUserByEmail(string email)
+        {
+            var userTable = await _context.UserTables.ToListAsync();
+            UserTable validUser=null;
+            foreach(UserTable user in userTable){
+                if (user.UserEmail == email)
+                {
+                    validUser = user;   
+                }
+            }
+
+            if (validUser == null)
+            {
+                return NotFound();
+            }
+
+            return validUser;
+        }
+        
+        
+        
 
         // PUT: api/UserTables/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
